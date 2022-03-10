@@ -40,22 +40,22 @@ void Sistema::modificarPropietario(int idP){
     switch (opc)
         {
         case 1:
-            cout << "Digite el nombre correspondiente" ;
+            cout << "Digite el nombre correspondiente: " ;
             cin >> nom;
             unmapPropietario[idP].setnombre(nom);
             break;
         case 2:
-            cout << "Digite el email correspondiente" ;
+            cout << "Digite el email correspondiente: " ;
             cin >> ema;
             unmapPropietario[idP].setEmail(ema);
             break;
         case 3:
-            cout << "Digite la identificacion correspondiente" ;
+            cout << "Digite la identificacion correspondiente: " ;
             cin >> ide;
             unmapPropietario[idP].setId(ide);
             break;
         case 4:
-            cout << "Digite el telefono correspondiente" ;
+            cout << "Digite el telefono correspondiente: " ;
             cin >> tel;
             unmapPropietario[idP].setTelefono(tel);
             break;
@@ -66,8 +66,19 @@ void Sistema::modificarPropietario(int idP){
 }
 
 void Sistema::eliminarPropietario(int idP){
-    unmapPropietario.erase(idP);
-    cout << "Propietario eliminado correctamente..." << endl;
+    int cont = 0;
+    for (int i = 0; i < vectorMasxPro.size(); i++){
+        if ((idP == vectorMasxPro[i].getPropietario().getId())){
+            cont++;
+        }
+    }
+    if (cont >= 2){
+        cout << "el propietario no se puede eliminar porque tiene 2 o mas mascotas" << endl;
+    }
+    else{
+        unmapPropietario.erase(idP);
+        cout << "Propietario eliminado correctamente..." << endl;
+    }
 }
 
 void Sistema::listarPropietario(){
@@ -120,10 +131,9 @@ void Sistema::asociarMascota(int idP, int idM, int cont){
             cout << "Esta mascota ya esta asociada a este propietario" << endl;
             return;
         }
-        
     }
     MascotaxPropietario relacion(unmapMascota[idM],unmapPropietario[idP]);
-    vectorMasxPro[cont] = relacion;
+    vectorMasxPro.push_back(relacion);
     cout << "se ha realiado la asociacion correctamente..." << endl;
 
 }
@@ -137,7 +147,7 @@ void Sistema::asociarPropietarioMascota(int idP, int idM, int cont){
         
     }
     MascotaxPropietario relacion(unmapMascota[idM],unmapPropietario[idP]);
-    vectorMasxPro[cont] = relacion;
+    vectorMasxPro.push_back(relacion);
     cout << "se ha realiado la asociacion correctamente..." << endl;
 
 }
@@ -149,11 +159,13 @@ void Sistema::cambiarStatusMascota(int idM, bool status){
 }
 
 void Sistema::eliminarPropietarioDeMascota(int idM, int idP){
+    
     for (int i = 0; i < vectorMasxPro.size(); i++){
         if ((vectorMasxPro[i].getMascota().getId() == idM) && (vectorMasxPro[i].getPropietario().getId() == idP)){
             while (i < vectorMasxPro.size()){
                 vectorMasxPro[i] = vectorMasxPro[i + 1];
                 i++;
+                
             }
             break;
         }
